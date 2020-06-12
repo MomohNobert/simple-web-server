@@ -33,8 +33,17 @@ http.createServer(function(req, res) {
 
     var fileStream = fs.createReadStream(fileName);
     fileStream.pipe(res);
+  } else if(stats.isDirectory) {
+    res.writeHead(302, {
+      'Location': 'index.html'
+    });
+    res.end();
+  } else {
+    res.writeHead(500, {'Content-type': 'text/plain'});
+    res.write('500 Internal Error\n');
+    res.end();
   }
-});
+}).listen(1337)
 
 // const hostname = '127.0.0.1';
 // const port = 1337;
