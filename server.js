@@ -14,7 +14,7 @@ const mimeTypes = {
 
 http.createServer(function(req, res) {
   var uri = url.parse(req.url).pathname;
-  var filename = path.join(process.cwd(), unescape(uri));
+  var fileName = path.join(process.cwd(), unescape(uri));
   console.log('Loading ' + uri);
   var stats;
 
@@ -28,8 +28,8 @@ http.createServer(function(req, res) {
   }
 
   if(stats.isFile()) {
-    var mimeTypes = mimeTypes[path.extname(fileName).split(".").reverse()[0]];
-    res.writeHead(200, {'Content-type': mimeType });
+    var mimeType = mimeTypes[path.extname(fileName).split(".").reverse()[0]];
+    res.writeHead(200, {'Content-type': mimeTypes });
 
     var fileStream = fs.createReadStream(fileName);
     fileStream.pipe(res);
