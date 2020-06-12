@@ -17,6 +17,23 @@ http.createServer(function(req, res) {
   var filename = path.join(process.cwd(), unescape(uri));
   console.log('Loading ' + uri);
   var stats;
+
+  try {
+    stats = fs.lstatSync(fileName);
+  } catch (e) {
+    res.writeHead(404, {'Content-type': 'text/plain'});
+    res.write('404 not Found');
+    res.end();
+    return;
+  }
+
+  if(stats.isFile()) {
+    var mimeTypes = mimeTypes[path.extname(fileName).split(".").reverse()[0]];
+    res.writeHead(200, {'Content-type': mimeType });
+
+    var fileStream = fs.createReadStream(fileName);
+    fileStream.pipe(res);
+  }
 });
 
 // const hostname = '127.0.0.1';
